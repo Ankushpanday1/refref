@@ -5,6 +5,7 @@ import {
   IconActivity,
   IconAward,
   IconChartBar,
+  IconDeviceGamepad2,
   IconHelp,
   IconListDetails,
   IconSettings,
@@ -32,6 +33,11 @@ const data = {
       title: "Programs",
       url: "/programs",
       icon: IconListDetails,
+    },
+    {
+      title: "Gamification",
+      url: "/gamification",
+      icon: IconDeviceGamepad2,
     },
     {
       title: "Participants",

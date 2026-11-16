@@ -20,6 +20,10 @@ export interface RefRef {
   isOpen: boolean;
   setConfig: (config: Partial<WidgetConfigType>) => void;
   getConfig: () => WidgetConfigType;
+  gamify: {
+    mount: (selector: string, widgetId: string, overrides?: any) => Promise<any>;
+    launchModal: (widgetId: string, overrides?: any) => Promise<any>;
+  };
 }
 
 // Helper function to safely parse cookies
@@ -48,6 +52,27 @@ class RefRefImpl implements RefRef {
     }
     return RefRefImpl.instance;
   }
+
+  gamify = {
+    mount: async (selector: string, widgetId: string, overrides?: any) => {
+      if (typeof window !== "undefined") {
+        const GamifyClass = (window as any).Gamify;
+        if (GamifyClass) {
+          const g = new GamifyClass();
+          return g.mount(selector, widgetId, overrides);
+        }
+      }
+    },
+    launchModal: async (widgetId: string, overrides?: any) => {
+      if (typeof window !== "undefined") {
+        const GamifyClass = (window as any).Gamify;
+        if (GamifyClass) {
+          const g = new GamifyClass();
+          return g.launchModal(widgetId, overrides);
+        }
+      }
+    },
+  };
 
   async init({
     productId,
