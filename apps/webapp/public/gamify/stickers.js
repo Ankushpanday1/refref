@@ -176,42 +176,32 @@
   const TIER_CONFIG = {
     mythic: {
       label: 'MYTHIC',
-      color: '#EC4899',
-      border: 'linear-gradient(135deg, #FF0080, #7928CA, #FF0080)',
-      bg: 'linear-gradient(135deg, rgba(236,72,153,0.2), rgba(121,40,202,0.25))',
-      glow: '0 0 35px rgba(236,72,153,0.6), 0 0 70px rgba(121,40,202,0.4)',
+      color: '#D65B62',
+      bg: 'rgba(214,91,98,0.12)',
       badgeClass: 'tier-mythic'
     },
     legendary: {
       label: 'LEGENDARY',
-      color: '#F59E0B',
-      border: 'linear-gradient(135deg, #F59E0B, #FBBF24, #D97706)',
-      bg: 'linear-gradient(135deg, rgba(245,158,11,0.2), rgba(217,119,6,0.25))',
-      glow: '0 0 30px rgba(245,158,11,0.5)',
+      color: '#D99A35',
+      bg: 'rgba(217,154,53,0.12)',
       badgeClass: 'tier-legendary'
     },
     epic: {
       label: 'EPIC',
-      color: '#8B5CF6',
-      border: 'linear-gradient(135deg, #8B5CF6, #A78BFA, #6D28D9)',
-      bg: 'linear-gradient(135deg, rgba(139,92,246,0.2), rgba(109,40,217,0.25))',
-      glow: '0 0 25px rgba(139,92,246,0.5)',
+      color: '#7C6ADB',
+      bg: 'rgba(124,106,219,0.12)',
       badgeClass: 'tier-epic'
     },
     rare: {
       label: 'RARE',
-      color: '#06B6D4',
-      border: 'linear-gradient(135deg, #06B6D4, #38BDF8, #0284C7)',
-      bg: 'linear-gradient(135deg, rgba(6,182,212,0.2), rgba(2,132,199,0.25))',
-      glow: '0 0 20px rgba(6,182,212,0.4)',
+      color: '#4F83CC',
+      bg: 'rgba(79,131,204,0.12)',
       badgeClass: 'tier-rare'
     },
     common: {
       label: 'COMMON',
-      color: '#10B981',
-      border: 'linear-gradient(135deg, #10B981, #34D399, #059669)',
-      bg: 'linear-gradient(135deg, rgba(16,185,129,0.2), rgba(5,150,105,0.25))',
-      glow: '0 0 15px rgba(16,185,129,0.3)',
+      color: '#22A06B',
+      bg: 'rgba(34,160,107,0.12)',
       badgeClass: 'tier-common'
     }
   };
@@ -243,23 +233,15 @@
     const style = document.createElement('style');
     style.id = 'gamify-sticker-styles';
     style.textContent = `
-      @keyframes gmfStickerSpin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-      }
       @keyframes gmfStickerPop {
         0% { transform: scale(0.4) rotate(-10deg); opacity: 0; }
         60% { transform: scale(1.12) rotate(4deg); opacity: 1; }
         80% { transform: scale(0.96) rotate(-2deg); }
         100% { transform: scale(1) rotate(0deg); opacity: 1; }
       }
-      @keyframes gmfStickerRays {
-        0% { transform: translate(-50%, -50%) rotate(0deg); }
-        100% { transform: translate(-50%, -50%) rotate(360deg); }
-      }
       @keyframes gmfStickerFloat {
-        0%, 100% { transform: translateY(0px) rotate(0deg); }
-        50% { transform: translateY(-8px) rotate(2deg); }
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-4px); }
       }
       @keyframes gmfConfettiFall {
         0% { transform: translateY(-50px) rotate(0deg); opacity: 1; }
@@ -270,44 +252,28 @@
         position: fixed;
         inset: 0;
         z-index: 999999;
-        background: rgba(8, 11, 22, 0.88);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
+        background: rgba(15, 17, 23, 0.85);
         display: flex;
         align-items: center;
         justify-content: center;
         padding: 20px;
         box-sizing: border-box;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        color: #FFFFFF;
+        font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: #F1F3F5;
       }
 
       .gmf-sticker-card-wrap {
         position: relative;
         max-width: 440px;
         width: 100%;
-        background: radial-gradient(circle at top, #1E293B, #0F172A 70%, #090D16);
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        border-radius: 28px;
+        background: #1C2230;
+        border: 1px solid #2B3240;
+        border-radius: 12px;
         padding: 36px 28px 28px;
         text-align: center;
-        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 0 0 40px rgba(99, 102, 241, 0.25);
+        box-shadow: 0 8px 32px rgba(0,0,0,0.5);
         animation: gmfStickerPop 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         overflow: hidden;
-      }
-
-      .gmf-rays-bg {
-        position: absolute;
-        top: 36%;
-        left: 50%;
-        width: 440px;
-        height: 440px;
-        background: repeating-conic-gradient(from 0deg, rgba(255, 215, 0, 0.15) 0deg 15deg, transparent 15deg 30deg);
-        transform: translate(-50%, -50%);
-        pointer-events: none;
-        animation: gmfStickerRays 20s linear infinite;
-        border-radius: 50%;
-        opacity: 0.85;
       }
 
       .gmf-sticker-img-box {
@@ -319,7 +285,7 @@
         align-items: center;
         justify-content: center;
         animation: gmfStickerFloat 3.5s ease-in-out infinite;
-        filter: drop-shadow(0 14px 24px rgba(0,0,0,0.55));
+        filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2));
         transition: transform 0.2s ease-out;
       }
 
@@ -328,36 +294,34 @@
         max-height: 100%;
         object-fit: contain;
         transform: scale(1.05);
-        filter: drop-shadow(0 8px 16px rgba(0,0,0,0.45));
       }
 
       .gmf-sticker-tier-badge {
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        padding: 5px 14px;
-        border-radius: 999px;
+        padding: 4px 10px;
+        border-radius: 4px;
         font-size: 11px;
-        font-weight: 800;
-        letter-spacing: 1px;
+        font-weight: 500;
+        letter-spacing: 0.5px;
         text-transform: uppercase;
         margin-bottom: 12px;
       }
 
       .gmf-sticker-title {
-        font-size: 26px;
-        font-weight: 900;
-        letter-spacing: -0.5px;
+        font-size: 24px;
+        font-weight: 600;
+        letter-spacing: -0.3px;
         margin: 0 0 6px;
-        color: #FFFFFF;
-        text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        color: #F1F3F5;
       }
 
       .gmf-sticker-tagline {
         font-size: 14px;
-        color: #94A3B8;
+        color: #9AA4B2;
         margin: 0 0 18px;
-        font-weight: 500;
+        font-weight: 400;
       }
 
       .gmf-sticker-rewards-row {
@@ -372,42 +336,40 @@
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        background: rgba(255, 255, 255, 0.08);
-        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: #171B24;
+        border: 1px solid #2B3240;
         padding: 8px 16px;
-        border-radius: 14px;
+        border-radius: 6px;
         font-size: 13px;
-        font-weight: 700;
-        color: #F8FAFC;
+        font-weight: 500;
+        color: #F1F3F5;
       }
 
       .gmf-sticker-trigger-box {
-        background: rgba(15, 23, 42, 0.6);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 12px;
+        background: #141820;
+        border: 1px solid #2B3240;
+        border-radius: 8px;
         padding: 10px 14px;
         font-size: 12px;
-        color: #CBD5E1;
+        color: #9AA4B2;
         margin-bottom: 22px;
         line-height: 1.4;
       }
 
       .gmf-sticker-btn-primary {
         width: 100%;
-        padding: 14px 20px;
-        border-radius: 16px;
-        background: linear-gradient(135deg, #FFB800, #F59E0B);
+        padding: 10px 16px;
+        border-radius: 6px;
+        background: #4F83CC;
         border: none;
-        color: #0F172A;
-        font-weight: 800;
-        font-size: 16px;
+        color: #FFFFFF;
+        font-weight: 500;
+        font-size: 14px;
         cursor: pointer;
-        box-shadow: 0 8px 24px rgba(245, 158, 11, 0.4);
-        transition: transform 0.15s ease, filter 0.15s ease;
+        transition: background 0.15s ease;
       }
       .gmf-sticker-btn-primary:hover {
-        transform: translateY(-2px);
-        filter: brightness(1.1);
+        background: #6396D8;
       }
       .gmf-sticker-btn-primary:active {
         transform: translateY(1px);
@@ -416,19 +378,19 @@
       .gmf-sticker-btn-secondary {
         width: 100%;
         margin-top: 10px;
-        padding: 11px 18px;
+        padding: 9px 16px;
         background: transparent;
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        border-radius: 14px;
-        color: #94A3B8;
-        font-weight: 600;
+        border: 1px solid #2B3240;
+        border-radius: 6px;
+        color: #9AA4B2;
+        font-weight: 500;
         font-size: 13px;
         cursor: pointer;
-        transition: all 0.15s ease;
+        transition: border-color 0.15s ease, color 0.15s ease;
       }
       .gmf-sticker-btn-secondary:hover {
-        background: rgba(255, 255, 255, 0.06);
-        color: #FFFFFF;
+        border-color: #4F83CC;
+        color: #F1F3F5;
       }
 
       /* Sticker Album Drawer */
@@ -437,10 +399,10 @@
         max-width: 780px;
         width: 100%;
         max-height: 90vh;
-        background: #0B0F19;
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        border-radius: 26px;
-        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.85);
+        background: #0F1117;
+        border: 1px solid #2B3240;
+        border-radius: 12px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.5);
         display: flex;
         flex-direction: column;
         overflow: hidden;
@@ -448,8 +410,8 @@
 
       .gmf-album-header {
         padding: 24px 28px 18px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-        background: linear-gradient(180deg, rgba(30, 41, 59, 0.6), transparent);
+        border-bottom: 1px solid #222836;
+        background: #171B24;
       }
 
       .gmf-album-body {
@@ -462,24 +424,25 @@
 
       .gmf-album-item {
         position: relative;
-        background: rgba(15, 23, 42, 0.7);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 18px;
+        background: #171B24;
+        border: 1px solid #222836;
+        border-radius: 8px;
         padding: 14px 10px;
         text-align: center;
         cursor: pointer;
-        transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s, box-shadow 0.2s;
+        transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s;
       }
       .gmf-album-item:hover {
-        transform: translateY(-4px) scale(1.02);
+        transform: translateY(-2px);
+        border-color: #2B3240;
       }
 
       .gmf-album-item.unlocked {
-        border-color: rgba(245, 158, 11, 0.35);
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        border-color: #2B3240;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.2);
       }
       .gmf-album-item.unlocked:hover {
-        box-shadow: 0 12px 30px rgba(245, 158, 11, 0.25);
+        border-color: #4F83CC;
       }
 
       .gmf-album-item.locked {
@@ -506,16 +469,16 @@
 
       .gmf-album-item-name {
         font-size: 12px;
-        font-weight: 700;
-        color: #F8FAFC;
+        font-weight: 500;
+        color: #F1F3F5;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
       }
       .gmf-album-item-xp {
         font-size: 10px;
-        font-weight: 600;
-        color: #F59E0B;
+        font-weight: 500;
+        color: #9AA4B2;
         margin-top: 3px;
       }
     `;

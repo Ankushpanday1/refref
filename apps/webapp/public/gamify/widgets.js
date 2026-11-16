@@ -13,27 +13,28 @@
       .gw-phone-frame {
         width: 340px;
         min-height: 540px;
-        border-radius: 32px;
+        border-radius: 16px;
         overflow: hidden;
         position: relative;
-        box-shadow: 0 24px 64px rgba(0, 0, 0, 0.65), 0 0 0 6px #1B2030;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px #2B3240;
+        font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         user-select: none;
         display: flex;
         flex-direction: column;
+        background: #0F1117;
       }
-      .gw-btn-press:active { transform: translateY(2px) scale(0.985); }
+      .gw-btn-press:active { transform: translateY(1px); }
       @keyframes gwSunburstSpin {
         from { transform: translate(-50%, -50%) rotate(0deg); }
         to { transform: translate(-50%, -50%) rotate(360deg); }
       }
       @keyframes gwFloatCoin {
-        0%, 100% { transform: translateY(0px) scale(1); }
-        50% { transform: translateY(-7px) scale(1.03); }
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-4px); }
       }
       @keyframes gwPointHand {
-        0%, 100% { transform: translate(0, 0) rotate(-6deg); }
-        50% { transform: translate(8px, -4px) rotate(4deg); }
+        0%, 100% { transform: translate(0, 0); }
+        50% { transform: translate(4px, -2px); }
       }
       @keyframes gwToastSlide {
         0% { transform: translateY(-70px); opacity: 0; }
@@ -41,40 +42,39 @@
         100% { transform: translateY(-70px); opacity: 0; }
       }
       @keyframes gwStarburstExpand {
-        0% { transform: translate(-50%, -50%) scale(0.05) rotate(0deg); opacity: 1; }
-        55% { transform: translate(-50%, -50%) scale(3.4) rotate(25deg); opacity: 1; }
-        100% { transform: translate(-50%, -50%) scale(4.2) rotate(35deg); opacity: 0; }
+        0% { transform: translate(-50%, -50%) scale(0.05); opacity: 1; }
+        55% { transform: translate(-50%, -50%) scale(2.5); opacity: 1; }
+        100% { transform: translate(-50%, -50%) scale(3.2); opacity: 0; }
       }
       @keyframes gwCoinFly {
         0% { transform: translate(0, 0) scale(0.6); opacity: 1; }
-        45% { transform: translate(var(--tx-mid), -110px) scale(1.1); opacity: 1; }
-        100% { transform: translate(var(--tx-end), -240px) scale(0.45); opacity: 0; }
+        45% { transform: translate(var(--tx-mid), -100px) scale(1); opacity: 1; }
+        100% { transform: translate(var(--tx-end), -220px) scale(0.45); opacity: 0; }
       }
       @keyframes gwPopIn {
-        0% { transform: scale(0.5); opacity: 0; }
-        70% { transform: scale(1.08); opacity: 1; }
+        0% { transform: scale(0.7); opacity: 0; }
         100% { transform: scale(1); opacity: 1; }
-      }
-      @keyframes gwBubbleRise {
-        0% { transform: translateY(0) scale(0.8); opacity: 0.7; }
-        100% { transform: translateY(-90px) scale(1.2); opacity: 0; }
       }
       .gw-replay-chip {
         position: absolute;
         top: 10px;
         right: 10px;
         z-index: 60;
-        background: rgba(0, 0, 0, 0.55);
-        backdrop-filter: blur(6px);
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        color: #FFF;
-        font-size: 10px;
-        font-weight: 700;
-        padding: 4px 9px;
-        border-radius: 12px;
+        background: #171B24;
+        border: 1px solid #2B3240;
+        color: #9AA4B2;
+        font-size: 11px;
+        font-weight: 500;
+        padding: 4px 8px;
+        border-radius: 4px;
         cursor: pointer;
+        font-family: 'IBM Plex Sans', sans-serif;
       }
-      .gw-replay-chip:hover { background: rgba(0, 0, 0, 0.8); }
+      .gw-replay-chip:hover {
+        background: #232A36;
+        color: #F1F3F5;
+        border-color: #4F83CC;
+      }
     `;
     document.head.appendChild(style);
   }

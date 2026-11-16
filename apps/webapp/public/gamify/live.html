@@ -3,31 +3,44 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gamify Live App — All Tools & Stickers Playground</title>
+  <title>Gamify — Interactive Sandbox Environment</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
   <style>
     :root {
-      --bg: #090D16;
-      --card-bg: rgba(17, 24, 39, 0.75);
-      --card-border: rgba(255, 255, 255, 0.09);
-      --accent-gold: #F59E0B;
-      --accent-pink: #EC4899;
-      --accent-purple: #8B5CF6;
-      --accent-cyan: #06B6D4;
-      --text: #F8FAFC;
-      --text-muted: #94A3B8;
+      --ds-bg: #0F1117;
+      --ds-surface: #171B24;
+      --ds-card: #1C2230;
+      --ds-card-hover: #222938;
+      --ds-border: #2B3240;
+      --ds-border-subtle: #222836;
+      --ds-accent: #4F83CC;
+      --ds-accent-hover: #6396D8;
+      --ds-success: #22A06B;
+      --ds-warning: #D99A35;
+      --ds-error: #D65B62;
+      --ds-text: #F1F3F5;
+      --ds-text-secondary: #9AA4B2;
+      --ds-text-tertiary: #6B7280;
+      --ds-font-sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --ds-font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      background: radial-gradient(circle at 50% 0%, #151C2C, #090D16 70%);
-      color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--ds-bg);
+      color: var(--ds-text);
+      font-family: var(--ds-font-sans);
+      font-size: 14px;
+      line-height: 1.5;
       min-height: 100vh;
       overflow-x: hidden;
-      padding-bottom: 80px;
+      padding-bottom: 72px;
+      -webkit-font-smoothing: antialiased;
     }
 
     /* Top HUD */
@@ -35,11 +48,10 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(9, 13, 22, 0.85);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--card-border);
-      padding: 12px 24px;
+      background: var(--ds-surface);
+      border-bottom: 1px solid var(--ds-border);
+      padding: 0 24px;
+      height: 52px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -49,185 +61,172 @@
     .brand-group {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       cursor: pointer;
     }
 
     .brand-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, #FFB800, #F59E0B);
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background: var(--ds-accent);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 20px;
-      color: #0F172A;
-      box-shadow: 0 4px 14px rgba(245, 158, 11, 0.4);
+      font-size: 14px;
+      color: #FFFFFF;
     }
 
     .brand-text h1 {
-      font-size: 18px;
-      font-weight: 800;
-      letter-spacing: -0.3px;
-      background: linear-gradient(90deg, #FFFFFF, #CBD5E1);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: -0.2px;
+      color: var(--ds-text);
     }
     .brand-text span {
       font-size: 11px;
-      color: var(--accent-gold);
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      color: var(--ds-text-secondary);
+      font-weight: 500;
+      margin-left: 6px;
     }
 
     .hud-metrics {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 8px;
     }
 
     .hud-pill {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--card-border);
-      padding: 6px 14px;
-      border-radius: 999px;
-      font-size: 13px;
-      font-weight: 700;
+      background: var(--ds-card);
+      border: 1px solid var(--ds-border);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
       display: flex;
       align-items: center;
       gap: 6px;
-      transition: all 0.2s ease;
-    }
-    .hud-pill:hover {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: rgba(255, 255, 255, 0.2);
+      font-family: var(--ds-font-mono);
+      color: var(--ds-text);
     }
 
     .btn-album-hud {
-      background: linear-gradient(135deg, #EC4899, #8B5CF6);
-      border: none;
-      color: white;
-      padding: 8px 18px;
-      border-radius: 999px;
-      font-size: 13px;
-      font-weight: 800;
+      background: var(--ds-accent);
+      border: 1px solid var(--ds-accent);
+      color: #FFFFFF;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      font-family: var(--ds-font-sans);
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 8px;
-      box-shadow: 0 4px 16px rgba(236, 72, 153, 0.35);
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      gap: 6px;
+      transition: background 0.15s;
     }
     .btn-album-hud:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 6px 20px rgba(236, 72, 153, 0.5);
+      background: var(--ds-accent-hover);
     }
 
-    /* Hero Banner */
+    /* Hero */
     .hero-banner {
-      max-width: 1240px;
-      margin: 24px auto 0;
+      max-width: 1200px;
+      margin: 20px auto 0;
       padding: 0 20px;
-      text-align: center;
     }
 
     .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(245, 158, 11, 0.12);
-      border: 1px solid rgba(245, 158, 11, 0.3);
-      color: var(--accent-gold);
-      padding: 4px 12px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 12px;
-    }
-
-    .hero-title {
-      font-size: 32px;
-      font-weight: 900;
-      letter-spacing: -0.8px;
+      display: inline-block;
+      font-size: 11px;
+      font-family: var(--ds-font-mono);
+      font-weight: 500;
+      color: var(--ds-accent);
+      background: rgba(79, 131, 204, 0.12);
+      border: 1px solid rgba(79, 131, 204, 0.25);
+      padding: 2px 8px;
+      border-radius: 4px;
       margin-bottom: 8px;
     }
 
+    .hero-title {
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: -0.4px;
+      color: var(--ds-text);
+      margin-bottom: 4px;
+    }
+
     .hero-desc {
-      font-size: 15px;
-      color: var(--text-muted);
-      max-width: 680px;
-      margin: 0 auto 24px;
+      font-size: 14px;
+      color: var(--ds-text-secondary);
+      max-width: 760px;
+      margin-bottom: 18px;
       line-height: 1.5;
     }
 
-    /* Tool Switcher Tabs */
+    /* Tool Tabs */
     .tool-tabs-bar {
-      max-width: 1240px;
-      margin: 0 auto 24px;
+      max-width: 1200px;
+      margin: 0 auto 18px;
       padding: 0 20px;
       display: flex;
-      gap: 8px;
+      gap: 6px;
       overflow-x: auto;
       scrollbar-width: none;
     }
     .tool-tabs-bar::-webkit-scrollbar { display: none; }
 
     .tool-tab-btn {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--card-border);
-      color: var(--text-muted);
-      padding: 10px 18px;
-      border-radius: 14px;
-      font-size: 13px;
-      font-weight: 700;
+      background: var(--ds-surface);
+      border: 1px solid var(--ds-border);
+      color: var(--ds-text-secondary);
+      padding: 7px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       white-space: nowrap;
-      transition: all 0.2s ease;
+      transition: all 0.15s ease;
+      font-family: var(--ds-font-sans);
     }
     .tool-tab-btn:hover {
-      background: rgba(255, 255, 255, 0.08);
-      color: var(--text);
+      background: var(--ds-card);
+      color: var(--ds-text);
     }
     .tool-tab-btn.active {
-      background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(236, 72, 153, 0.15));
-      border-color: rgba(245, 158, 11, 0.5);
-      color: #FFFFFF;
-      box-shadow: 0 4px 16px rgba(245, 158, 11, 0.2);
+      background: var(--ds-card);
+      border-color: var(--ds-accent);
+      color: var(--ds-accent);
+      font-weight: 600;
     }
 
-    /* Main Live Stage */
+    /* Stage */
     .stage-container {
-      max-width: 1240px;
+      max-width: 1200px;
       margin: 0 auto;
       padding: 0 20px;
       display: grid;
-      grid-template-columns: 1fr 380px;
-      gap: 24px;
+      grid-template-columns: 1fr 340px;
+      gap: 16px;
     }
 
-    @media (max-width: 980px) {
+    @media (max-width: 960px) {
       .stage-container { grid-template-columns: 1fr; }
     }
 
     .stage-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 24px;
-      padding: 24px;
-      backdrop-filter: blur(12px);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+      background: var(--ds-card);
+      border: 1px solid var(--ds-border);
+      border-radius: 10px;
+      padding: 18px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      position: relative;
-      min-height: 540px;
+      min-height: 520px;
     }
 
     .stage-header {
@@ -235,14 +234,15 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 20px;
-      padding-bottom: 14px;
-      border-bottom: 1px solid var(--card-border);
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--ds-border);
     }
 
     .stage-title {
-      font-size: 16px;
-      font-weight: 800;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ds-text);
       display: flex;
       align-items: center;
       gap: 8px;
@@ -250,23 +250,26 @@
 
     .stage-action-btns {
       display: flex;
-      gap: 8px;
+      gap: 6px;
     }
 
     .btn-sm-action {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid var(--card-border);
-      color: var(--text-muted);
-      padding: 6px 12px;
-      border-radius: 8px;
+      background: var(--ds-surface);
+      border: 1px solid var(--ds-border);
+      color: var(--ds-text-secondary);
+      padding: 5px 10px;
+      border-radius: 6px;
       font-size: 11px;
-      font-weight: 700;
+      font-weight: 500;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
       transition: all 0.15s ease;
     }
     .btn-sm-action:hover {
-      background: rgba(255, 255, 255, 0.12);
-      color: #FFF;
+      border-color: var(--ds-accent);
+      color: var(--ds-text);
     }
 
     .widget-mount-box {
@@ -274,31 +277,30 @@
       display: flex;
       justify-content: center;
       align-items: flex-start;
-      min-height: 460px;
+      min-height: 440px;
     }
 
-    /* Right Sidebar: Quick Launch & Stickers Shelf */
+    /* Right Sidebar */
     .sidebar-panel {
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 14px;
     }
 
     .side-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 20px;
-      padding: 20px;
-      backdrop-filter: blur(12px);
+      background: var(--ds-card);
+      border: 1px solid var(--ds-border);
+      border-radius: 10px;
+      padding: 14px;
     }
 
     .side-card-title {
-      font-size: 14px;
-      font-weight: 800;
+      font-size: 11px;
+      font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      color: var(--text-muted);
-      margin-bottom: 14px;
+      color: var(--ds-text-tertiary);
+      margin-bottom: 10px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -307,47 +309,45 @@
     .quick-launch-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10px;
+      gap: 6px;
     }
 
     .quick-launch-btn {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--card-border);
-      border-radius: 12px;
-      padding: 12px 10px;
-      color: var(--text);
-      text-align: left;
+      background: var(--ds-surface);
+      border: 1px solid var(--ds-border);
+      border-radius: 6px;
+      padding: 9px 8px;
+      color: var(--ds-text);
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 500;
       cursor: pointer;
       display: flex;
-      flex-direction: column;
-      gap: 6px;
+      align-items: center;
+      gap: 8px;
       transition: all 0.15s ease;
+      font-family: var(--ds-font-sans);
     }
     .quick-launch-btn:hover {
-      background: rgba(255, 255, 255, 0.09);
-      border-color: rgba(255, 255, 255, 0.2);
-      transform: translateY(-2px);
+      background: var(--ds-card-hover);
+      border-color: var(--ds-accent);
     }
     .quick-launch-btn i {
-      font-size: 16px;
-      color: var(--accent-gold);
+      font-size: 13px;
+      color: var(--ds-text-secondary);
     }
 
-    /* 15 Stickers Gallery Section */
+    /* 15 Stickers Gallery */
     .stickers-section {
-      max-width: 1240px;
-      margin: 40px auto 0;
+      max-width: 1200px;
+      margin: 32px auto 0;
       padding: 0 20px;
     }
 
     .stickers-card-wrap {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 26px;
-      padding: 28px;
-      backdrop-filter: blur(12px);
+      background: var(--ds-card);
+      border: 1px solid var(--ds-border);
+      border-radius: 10px;
+      padding: 20px;
     }
 
     .stickers-head {
@@ -355,23 +355,24 @@
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 16px;
-      margin-bottom: 24px;
-      padding-bottom: 18px;
-      border-bottom: 1px solid var(--card-border);
+      gap: 12px;
+      margin-bottom: 18px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--ds-border);
     }
 
     .stickers-title-group h2 {
-      font-size: 22px;
-      font-weight: 900;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--ds-text);
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
     }
     .stickers-title-group p {
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-top: 4px;
+      font-size: 12px;
+      color: var(--ds-text-secondary);
+      margin-top: 2px;
     }
 
     .filter-chips {
@@ -381,59 +382,53 @@
     }
 
     .chip-btn {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--card-border);
-      color: var(--text-muted);
-      padding: 6px 12px;
-      border-radius: 999px;
+      background: var(--ds-surface);
+      border: 1px solid var(--ds-border);
+      color: var(--ds-text-secondary);
+      padding: 4px 10px;
+      border-radius: 6px;
       font-size: 11px;
-      font-weight: 700;
+      font-weight: 500;
       cursor: pointer;
       transition: all 0.15s ease;
+      font-family: var(--ds-font-sans);
     }
     .chip-btn:hover, .chip-btn.active {
-      background: rgba(255, 255, 255, 0.12);
-      color: #FFF;
-      border-color: rgba(255, 255, 255, 0.25);
+      background: var(--ds-card);
+      color: var(--ds-text);
+      border-color: var(--ds-accent);
     }
 
     .stickers-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-      gap: 18px;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 12px;
     }
 
     .sticker-card {
-      background: rgba(15, 23, 42, 0.6);
-      border: 1px solid var(--card-border);
-      border-radius: 20px;
-      padding: 16px;
+      background: var(--ds-surface);
+      border: 1px solid var(--ds-border);
+      border-radius: 8px;
+      padding: 14px 12px;
       text-align: center;
-      position: relative;
       cursor: pointer;
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: border-color 0.15s, background 0.15s;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
     .sticker-card:hover {
-      transform: translateY(-6px) scale(1.02);
-      border-color: rgba(245, 158, 11, 0.4);
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(245, 158, 11, 0.2);
+      background: var(--ds-card-hover);
+      border-color: var(--ds-accent);
     }
 
     .sticker-thumb {
-      width: 120px;
-      height: 110px;
-      margin: 4px auto 10px;
+      width: 90px;
+      height: 85px;
+      margin: 4px auto 8px;
       display: flex;
       align-items: center;
       justify-content: center;
-      filter: drop-shadow(0 6px 12px rgba(0,0,0,0.5));
-      transition: transform 0.2s ease;
-    }
-    .sticker-card:hover .sticker-thumb {
-      transform: scale(1.08) rotate(2deg);
     }
     .sticker-thumb img {
       max-width: 100%;
@@ -442,16 +437,16 @@
     }
 
     .sticker-name {
-      font-size: 14px;
-      font-weight: 800;
-      margin-bottom: 4px;
-      color: #FFFFFF;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 2px;
+      color: var(--ds-text);
     }
 
     .sticker-sub {
       font-size: 11px;
-      color: var(--text-muted);
-      margin-bottom: 12px;
+      color: var(--ds-text-secondary);
+      margin-bottom: 10px;
       line-height: 1.3;
       height: 28px;
       display: -webkit-box;
@@ -467,75 +462,80 @@
       align-items: center;
       justify-content: space-between;
       gap: 6px;
-      padding-top: 10px;
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding-top: 8px;
+      border-top: 1px solid var(--ds-border-subtle);
     }
 
     .badge-tier {
-      padding: 3px 8px;
-      border-radius: 6px;
-      font-size: 9px;
-      font-weight: 800;
-      letter-spacing: 0.5px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.4px;
       text-transform: uppercase;
+      font-family: var(--ds-font-mono);
     }
 
     .btn-test-unlock {
-      background: linear-gradient(135deg, #FFB800, #F59E0B);
-      border: none;
-      color: #0F172A;
-      padding: 5px 10px;
-      border-radius: 8px;
+      background: var(--ds-accent);
+      border: 1px solid var(--ds-accent);
+      color: #FFFFFF;
+      padding: 4px 8px;
+      border-radius: 4px;
       font-size: 11px;
-      font-weight: 800;
+      font-weight: 500;
       cursor: pointer;
-      transition: filter 0.15s ease;
+      font-family: var(--ds-font-sans);
+      transition: background 0.15s;
     }
     .btn-test-unlock:hover {
-      filter: brightness(1.15);
+      background: var(--ds-accent-hover);
     }
 
-    /* Floating Action Dock */
+    /* Floating Dock */
     .floating-dock {
       position: fixed;
-      bottom: 20px;
+      bottom: 16px;
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(15, 23, 42, 0.88);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 999px;
-      padding: 8px 16px;
+      background: var(--ds-surface);
+      border: 1px solid var(--ds-border);
+      border-radius: 8px;
+      padding: 6px 10px;
       display: flex;
       align-items: center;
-      gap: 10px;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+      gap: 6px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
       z-index: 9999;
     }
 
     .dock-btn {
       background: transparent;
-      border: none;
-      color: var(--text-muted);
-      font-size: 13px;
-      font-weight: 700;
-      padding: 8px 14px;
-      border-radius: 999px;
+      border: 1px solid transparent;
+      color: var(--ds-text-secondary);
+      font-size: 12px;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: 6px;
       cursor: pointer;
       display: flex;
       align-items: center;
       gap: 6px;
+      font-family: var(--ds-font-sans);
       transition: all 0.15s ease;
     }
     .dock-btn:hover {
-      background: rgba(255, 255, 255, 0.08);
-      color: #FFF;
+      background: var(--ds-card);
+      color: var(--ds-text);
+      border-color: var(--ds-border);
     }
     .dock-btn.primary {
-      background: linear-gradient(135deg, #EC4899, #8B5CF6);
-      color: #FFF;
-      box-shadow: 0 4px 14px rgba(236, 72, 153, 0.4);
+      background: var(--ds-accent);
+      color: #FFFFFF;
+      border-color: var(--ds-accent);
+    }
+    .dock-btn.primary:hover {
+      background: var(--ds-accent-hover);
     }
   </style>
 </head>
@@ -546,38 +546,36 @@
     <div class="brand-group" onclick="location.reload()">
       <div class="brand-icon"><i class="fa-solid fa-trophy"></i></div>
       <div class="brand-text">
-        <h1>Gamify PlayZone</h1>
-        <span>Live All-Tools Experience</span>
+        <h1>Gamify Playground <span>Live Environment</span></h1>
       </div>
     </div>
 
     <div class="hud-metrics">
-      <div class="hud-pill" title="Your XP Level">
-        <span style="color:#F59E0B;"><i class="fa-solid fa-bolt"></i></span>
+      <div class="hud-pill" title="User XP">
+        <span style="color:var(--ds-accent);"><i class="fa-solid fa-bolt"></i></span>
         <span id="hudXp">2,450 XP</span>
       </div>
-      <div class="hud-pill" title="Coin Balance">
-        <span style="color:#10B981;"><i class="fa-solid fa-coins"></i></span>
+      <div class="hud-pill" title="Coins Balance">
+        <span style="color:var(--ds-success);"><i class="fa-solid fa-coins"></i></span>
         <span id="hudCoins">🪙 1,280</span>
       </div>
-      <div class="hud-pill" title="Daily Streak">
-        <span style="color:#EF4444;"><i class="fa-solid fa-fire"></i></span>
+      <div class="hud-pill" title="Streak Status">
+        <span style="color:var(--ds-warning);"><i class="fa-solid fa-fire"></i></span>
         <span id="hudStreak">7 Days</span>
       </div>
       <button class="btn-album-hud" onclick="openStickerAlbum()">
         <i class="fa-solid fa-book-bookmark"></i>
         <span>Sticker Album</span>
-        <span id="albumCountPill" style="background:rgba(0,0,0,0.3); padding:2px 6px; border-radius:999px; font-size:10px;">15 Badges</span>
       </button>
     </div>
   </header>
 
   <!-- Hero Banner -->
   <section class="hero-banner">
-    <div class="hero-badge">⚡ Interactive Live Sandbox</div>
-    <h2 class="hero-title">Experience Every Gamification Tool Live</h2>
+    <div class="hero-badge">PRODUCTION WORKSPACE</div>
+    <h2 class="hero-title">Gamified Mechanics Sandbox</h2>
     <p class="hero-desc">
-      Interact with the CRED Slot Machine, Bombay Shaving Wheel, MyNaksh 1:1 Streaks, Triple Podium Leaderboard, and collect all 15 achievement stickers upon completion!
+      Interact with every extracted gamification mechanic in real time. Events, telemetry, wallet state, and badge unlock flows are synchronized automatically.
     </p>
   </section>
 
@@ -585,7 +583,7 @@
   <nav class="tool-tabs-bar" id="toolTabs">
     <button class="tool-tab-btn active" data-id="cred_slot_09"><i class="fa-solid fa-dice"></i> CRED Slot Machine</button>
     <button class="tool-tab-btn" data-id="cred_wheel_07"><i class="fa-solid fa-dharmachakra"></i> CRED Spin Wheel</button>
-    <button class="tool-tab-btn" data-id="gamify_mynaksh_06"><i class="fa-solid fa-calendar-check"></i> MyNaksh Streak &amp; Mantra</button>
+    <button class="tool-tab-btn" data-id="mynaksh_checkin_02"><i class="fa-solid fa-calendar-check"></i> MyNaksh Streak &amp; Mantra</button>
     <button class="tool-tab-btn" data-id="gamify_leaderboard_08"><i class="fa-solid fa-ranking-star"></i> Podium Leaderboard</button>
     <button class="tool-tab-btn" data-id="zepto_scratch_01"><i class="fa-solid fa-wand-magic-sparkles"></i> Zepto Scratch</button>
     <button class="tool-tab-btn" data-id="duolingo_flow_06"><i class="fa-solid fa-crow"></i> Duolingo Flow</button>
@@ -604,7 +602,7 @@
         </div>
         <div class="stage-action-btns">
           <button class="btn-sm-action" onclick="reloadActiveWidget()"><i class="fa-solid fa-rotate-right"></i> Reload</button>
-          <button class="btn-sm-action" onclick="launchInModal()"><i class="fa-solid fa-expand"></i> Modal View</button>
+          <button class="btn-sm-action" onclick="launchInModal()"><i class="fa-solid fa-expand"></i> Launch Modal</button>
         </div>
       </div>
 
@@ -617,7 +615,7 @@
       <!-- Quick Launch Drawer -->
       <div class="side-card">
         <div class="side-card-title">
-          <span>⚡ Quick Modal Popups</span>
+          <span>Modal Triggers</span>
           <i class="fa-solid fa-bolt"></i>
         </div>
         <div class="quick-launch-grid">
@@ -629,7 +627,7 @@
             <i class="fa-solid fa-dharmachakra"></i>
             <span>CRED Wheel</span>
           </button>
-          <button class="quick-launch-btn" onclick="gamify.launchModal('gamify_mynaksh_06')">
+          <button class="quick-launch-btn" onclick="gamify.launchModal('mynaksh_checkin_02')">
             <i class="fa-solid fa-calendar-check"></i>
             <span>MyNaksh</span>
           </button>
@@ -651,11 +649,11 @@
       <!-- Live Event Feed -->
       <div class="side-card">
         <div class="side-card-title">
-          <span>🔔 Real-Time Event Feed</span>
-          <span id="livePulse" style="width:8px; height:8px; background:#10B981; border-radius:50%; display:inline-block; box-shadow:0 0 8px #10B981;"></span>
+          <span>Real-Time Telemetry</span>
+          <span id="livePulse" style="width:6px; height:6px; background:var(--ds-success); border-radius:50%; display:inline-block;"></span>
         </div>
-        <div id="eventFeed" style="display:flex; flex-direction:column; gap:8px; max-height:210px; overflow-y:auto; font-size:12px;">
-          <div style="color:var(--text-muted); font-style:italic;">Interact with any tool to see live events and sticker unlocks...</div>
+        <div id="eventFeed" style="display:flex; flex-direction:column; gap:6px; max-height:220px; overflow-y:auto; font-size:12px;">
+          <div style="color:var(--ds-text-tertiary); font-style:normal;">Awaiting widget events...</div>
         </div>
       </div>
     </div>
@@ -666,8 +664,8 @@
     <div class="stickers-card-wrap">
       <div class="stickers-head">
         <div class="stickers-title-group">
-          <h2><span>🏆</span> Collectible Achievement Stickers (15 Badges)</h2>
-          <p>Handcrafted cartoon badges awarded to users upon completing streaks, spins, milestones, and challenges.</p>
+          <h2>Collectible Achievement Badges</h2>
+          <p>Standardized milestone stickers awarded upon completing streaks, spins, and challenges.</p>
         </div>
         <div class="filter-chips">
           <button class="chip-btn active" data-filter="all">All (15)</button>
@@ -688,13 +686,13 @@
   <!-- Floating Dock -->
   <div class="floating-dock">
     <button class="dock-btn primary" onclick="openStickerAlbum()">
-      <i class="fa-solid fa-book-open"></i> Open Sticker Album
+      <i class="fa-solid fa-book-open"></i> Sticker Album
     </button>
     <button class="dock-btn" onclick="unlockRandomSticker()">
       <i class="fa-solid fa-wand-magic-sparkles"></i> Test Random Unlock
     </button>
-    <button class="dock-btn" onclick="window.open('/dashboard', '_blank')">
-      <i class="fa-solid fa-sliders"></i> Open SaaS Studio
+    <button class="dock-btn" onclick="window.location.href='/dashboard'">
+      <i class="fa-solid fa-sliders"></i> Open Studio
     </button>
   </div>
 
@@ -710,24 +708,23 @@
     gamify.identify('demo_user_001', { name: 'Alex Rivers', tier: 'pro' });
 
     const TIER_COLORS = {
-      mythic: { color: '#EC4899', bg: 'rgba(236,72,153,0.15)', border: '#EC4899' },
-      legendary: { color: '#F59E0B', bg: 'rgba(245,158,11,0.15)', border: '#F59E0B' },
-      epic: { color: '#8B5CF6', bg: 'rgba(139,92,246,0.15)', border: '#8B5CF6' },
-      rare: { color: '#06B6D4', bg: 'rgba(6,182,212,0.15)', border: '#06B6D4' },
-      common: { color: '#10B981', bg: 'rgba(16,185,129,0.15)', border: '#10B981' }
+      mythic: { color: '#D65B62', bg: 'rgba(214,91,98,0.12)', border: '#2B3240' },
+      legendary: { color: '#D99A35', bg: 'rgba(217,154,53,0.12)', border: '#2B3240' },
+      epic: { color: '#7C6ADB', bg: 'rgba(124,106,219,0.12)', border: '#2B3240' },
+      rare: { color: '#4F83CC', bg: 'rgba(79,131,204,0.12)', border: '#2B3240' },
+      common: { color: '#22A06B', bg: 'rgba(34,160,107,0.12)', border: '#2B3240' }
     };
 
-    // Mount active widget
     async function loadWidget(widgetId) {
       currentWidgetId = widgetId;
       const mount = document.getElementById('widgetMountSlot');
-      mount.innerHTML = '<div style="color:var(--text-muted); padding:40px;"><i class="fa-solid fa-spinner fa-spin"></i> Loading ' + widgetId + '...</div>';
+      mount.innerHTML = '<div style="color:var(--ds-text-secondary); padding:40px;"><i class="fa-solid fa-spinner fa-spin"></i> Loading ' + widgetId + '...</div>';
       
       try {
         await gamify.mount(mount, widgetId);
       } catch (err) {
         console.error('Mount error:', err);
-        mount.innerHTML = '<div style="color:#EF4444; padding:20px;">Error loading widget: ' + err.message + '</div>';
+        mount.innerHTML = '<div style="color:var(--ds-error); padding:20px;">Error loading widget: ' + err.message + '</div>';
       }
     }
 
@@ -752,7 +749,6 @@
       }
     }
 
-    // Tab buttons
     document.querySelectorAll('.tool-tab-btn').forEach(btn => {
       btn.onclick = () => {
         document.querySelectorAll('.tool-tab-btn').forEach(b => b.classList.remove('active'));
@@ -763,7 +759,6 @@
       };
     });
 
-    // Render 15 Stickers Grid
     async function renderStickersGallery(filter = 'all') {
       const grid = document.getElementById('stickersGrid');
       const stickers = window.GamifyStickers ? window.GamifyStickers.getAll() : [];
@@ -773,7 +768,6 @@
 
       grid.innerHTML = filtered.map(s => {
         const tier = TIER_COLORS[s.tier] || TIER_COLORS.common;
-        const isUnlocked = !!userStore[s.id];
 
         return `
           <div class="sticker-card" onclick="gamify.unlockSticker('${s.id}')">
@@ -783,11 +777,11 @@
             <div class="sticker-name">${s.title}</div>
             <div class="sticker-sub">${s.tagline}</div>
             <div class="sticker-footer">
-              <span class="badge-tier" style="background:${tier.bg}; color:${tier.color}; border:1px solid ${tier.border};">
+              <span class="badge-tier" style="background:${tier.bg}; color:${tier.color};">
                 ${s.tier}
               </span>
               <button class="btn-test-unlock" onclick="event.stopPropagation(); gamify.unlockSticker('${s.id}')">
-                Claim
+                Inspect
               </button>
             </div>
           </div>
@@ -795,7 +789,6 @@
       }).join('');
     }
 
-    // Filter chips
     document.querySelectorAll('.chip-btn').forEach(btn => {
       btn.onclick = () => {
         document.querySelectorAll('.chip-btn').forEach(b => b.classList.remove('active'));
@@ -804,36 +797,33 @@
       };
     });
 
-    // Real-time Event Logger
     function logEvent(name, detail) {
       const feed = document.getElementById('eventFeed');
       const item = document.createElement('div');
-      item.style.padding = '8px 12px';
-      item.style.background = 'rgba(255,255,255,0.04)';
-      item.style.border = '1px solid rgba(255,255,255,0.08)';
-      item.style.borderRadius = '10px';
+      item.style.padding = '6px 10px';
+      item.style.background = 'var(--ds-surface)';
+      item.style.border = '1px solid var(--ds-border)';
+      item.style.borderRadius = '6px';
       item.style.display = 'flex';
       item.style.justifyContent = 'space-between';
       item.style.alignItems = 'center';
       item.innerHTML = `
         <div>
-          <span style="color:#F59E0B; font-weight:700;">⚡ ${name}</span>
-          <div style="color:#CBD5E1; font-size:11px;">${detail}</div>
+          <span style="color:var(--ds-accent); font-weight:500;">${name}</span>
+          <div style="color:var(--ds-text-secondary); font-size:11px;">${detail}</div>
         </div>
-        <span style="color:#64748B; font-size:10px;">just now</span>
+        <span style="color:var(--ds-text-tertiary); font-size:10px; font-family:var(--ds-font-mono);">just now</span>
       `;
       feed.prepend(item);
-      if (feed.children.length > 10) feed.lastElementChild.remove();
+      if (feed.children.length > 8) feed.lastElementChild.remove();
     }
 
-    // Listen to window events
     window.addEventListener('message', (e) => {
       if (e.data && e.data.type === 'gamify_event') {
         logEvent(e.data.event, JSON.stringify(e.data.metadata || {}));
       }
     });
 
-    // Init
     window.addEventListener('DOMContentLoaded', () => {
       loadWidget('cred_slot_09');
       renderStickersGallery();

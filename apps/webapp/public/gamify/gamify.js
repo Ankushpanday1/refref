@@ -42,20 +42,31 @@
       style.textContent = `
         .gamify-overlay {
           position: fixed; inset: 0;
-          background: rgba(8, 10, 16, 0.85);
-          backdrop-filter: blur(8px);
+          background: rgba(15, 17, 23, 0.82);
           z-index: 999999;
           display: flex; align-items: center; justify-content: center;
-          opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
+          opacity: 0; pointer-events: none; transition: opacity 0.2s ease;
+          font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         }
         .gamify-overlay.active { opacity: 1; pointer-events: auto; }
-        .gamify-modal-wrap { position: relative; transform: scale(0.92); transition: transform 0.25s ease; }
+        .gamify-modal-wrap {
+          position: relative;
+          transform: scale(0.96);
+          transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+          box-shadow: 0 12px 36px rgba(0,0,0,0.5);
+          border-radius: 12px;
+        }
         .gamify-overlay.active .gamify-modal-wrap { transform: scale(1); }
         .gamify-close-btn {
-          position: absolute; top: -14px; right: -14px; z-index: 99;
-          background: #1E293B; border: 2px solid #334155; color: #FFF;
-          width: 34px; height: 34px; border-radius: 50%; cursor: pointer;
-          font-size: 18px; display: flex; align-items: center; justify-content: center;
+          position: absolute; top: -12px; right: -12px; z-index: 99;
+          background: #171B24; border: 1px solid #2B3240; color: #9AA4B2;
+          width: 28px; height: 28px; border-radius: 6px; cursor: pointer;
+          font-size: 15px; display: flex; align-items: center; justify-content: center;
+          transition: border-color 0.15s, color 0.15s;
+        }
+        .gamify-close-btn:hover {
+          color: #F1F3F5;
+          border-color: #4F83CC;
         }
       `;
       document.head.appendChild(style);
