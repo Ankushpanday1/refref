@@ -32,7 +32,7 @@
       if (script && script.src) {
         return new URL(script.src).origin;
       }
-      return typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000';
+      return 'http://localhost:4000';
     }
 
     _injectStyles() {
@@ -72,10 +72,11 @@
     }
 
     async _ensureDependencies() {
-      if (this._depsLoaded && window.GamifyWidgets && window.GamifySoundEngine) return;
+      if (this._depsLoaded && window.GamifyWidgets && window.GamifySoundEngine && window.GamifyStickers) return;
       const loaders = [];
       if (!window.GamifySoundEngine) loaders.push(this._loadScript(`${this.endpoint}/sdk/sound-engine.js`));
       if (!window.GamifyWidgets) loaders.push(this._loadScript(`${this.endpoint}/sdk/widgets.js`));
+      if (!window.GamifyStickers) loaders.push(this._loadScript(`${this.endpoint}/sdk/stickers.js`));
       await Promise.all(loaders);
       this._depsLoaded = true;
     }
@@ -156,6 +157,38 @@
       await this.mount(slot, widgetId, overrideConfig);
       requestAnimationFrame(() => overlay.classList.add('active'));
       return { close };
+    }
+
+    async unlockSticker(stickerId, opts = {}) {
+      await this._ensureDependencies();
+      if (!window.GamifyStickers) throw new Error('Sticker engine failed to load');
+      const sound = opts.sound || new window.GamifySoundEngine(this.endpoint);
+      return window.GamifyStickers.unlock(stickerId, {
+        baseUrl: this.endpoint,
+        sound,
+        ...opts
+      });
+    }
+
+    async openStickerAlbum(opts = {}) {
+      await this._ensureDependencies();
+      if (!window.GamifyStickers) throw new Error('Sticker engine failed to load');
+      const sound = opts.sound || new window.GamifySoundEngine(this.endpoint);
+      return window.GamifyStickers.openAlbum({
+        baseUrl: this.endpoint,
+        sound,
+        ...opts
+      });
+    }
+
+    async getStickers() {
+      await this._ensureDependencies();
+      return window.GamifyStickers ? window.GamifyStickers.getAll() : [];
+    }
+
+    async getUserStickers() {
+      await this._ensureDependencies();
+      return window.GamifyStickers ? window.GamifyStickers.getUserStickers() : {};
     }
   }
 

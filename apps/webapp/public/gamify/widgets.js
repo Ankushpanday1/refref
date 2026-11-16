@@ -2170,8 +2170,33 @@
     render(mountEl, widget, opts = {}) {
       injectSharedStyles();
       const sound = opts.sound || new window.GamifySoundEngine(opts.baseUrl || '');
-      const emit = opts.onEvent || (() => {});
-      const ctx = { sound, emit };
+      const originalEmit = opts.onEvent || (() => {});
+      const emit = (ev, meta) => {
+        originalEmit(ev, meta);
+        // Automatic achievement sticker reward trigger
+        if (opts.autoStickers !== false && window.GamifyStickers) {
+          const STICKER_EVENT_MAP = {
+            'duolingo_flow_completed': 'award_winner',
+            'cred_slot_won': 'action_hero',
+            'cred_wheel_won': 'comedy_king',
+            'zepto_scratch_revealed': 'drama_llamaa',
+            'mynaksh_streak_claimed': 'binge_watcher',
+            'mynaksh_mantra_claimed': 'romance_pro',
+            'paytm_chest_opened': 'wildlife_explorer',
+            'paytm_spin_won': 'sci_fi_geek'
+          };
+          const targetSticker = STICKER_EVENT_MAP[ev];
+          if (targetSticker) {
+            setTimeout(() => {
+              window.GamifyStickers.unlock(targetSticker, {
+                baseUrl: opts.baseUrl || '',
+                sound
+              });
+            }, 850);
+          }
+        }
+      };
+      const ctx = { sound, emit, baseUrl: opts.baseUrl || '' };
 
       switch (widget.type) {
         case 'zepto_scratch': return renderZeptoScratch(mountEl, widget, ctx);
